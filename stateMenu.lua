@@ -51,6 +51,7 @@ function menu:CreateConnectFrame()
 	connectFrame:SetModal(true)
 	connectFrame:Center()
 	connectFrame:SetState("mainmenu")
+	--TODO, write GUI for the rest of the frame.
 end
 
 function menu:CreateHostFrame()
@@ -66,7 +67,8 @@ function menu:CreateHostFrame()
 	textInput:SetPos(190, 30)
 	textInput:SetWidth(100)
 	textInput.onEnter = function(object)
-		object:Clear()
+		--object is the string thing inside the textInput box.
+		--TODO: host a server when this function is called.
 	end
 	textInput:SetFont(love.graphics.newFont(12))
 	
