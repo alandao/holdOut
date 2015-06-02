@@ -2,8 +2,6 @@ Gamestate = require "libraries.hump.gamestate"
 Loveframes = require("libraries.loveframes")
 require("stateMenu")
 
---test comment
-
 
 function love.load()
     Gamestate.registerEvents()
@@ -37,5 +35,3 @@ end
 function love.textinput(text)
 	Loveframes.textinput(text)
 end
-
--- another test
