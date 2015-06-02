@@ -46,12 +46,34 @@ end
 function menu:CreateConnectFrame()
 	local connectFrame = Loveframes.Create("frame")
 	connectFrame:SetName("Connect to server")
-	connectFrame:SetSize(500, 180)
+	connectFrame:SetSize(300, 200)
 	connectFrame:SetDraggable(false)
 	connectFrame:SetModal(true)
 	connectFrame:Center()
 	connectFrame:SetState("mainmenu")
-	--TODO, write GUI for the rest of the frame.
+	
+	local textIP = Loveframes.Create("text", connectFrame)
+	textIP:SetText("IP: ")
+	textIP:SetPos(10, 36)
+	
+	local textInputIP = Loveframes.Create("textinput", connectFrame)
+	textInputIP:SetPos(100, 30)
+	textInputIP:SetWidth(190)
+	
+	local textPort = Loveframes.Create("text", connectFrame)
+	textPort:SetText("Port: ")
+	textPort:SetPos(10, 80)
+	
+	local textInputPort = Loveframes.Create("textinput", connectFrame)
+	textInputPort:SetPos(220, 74)
+	textInputPort:SetWidth(70)
+	
+	--this button on click will host a server.
+	local buttonConnect = Loveframes.Create("button", connectFrame)
+	buttonConnect:SetPos(10, 110)
+	buttonConnect:SetSize(280, 80)
+	buttonConnect:SetText("Connect")
+	
 end
 
 function menu:CreateHostFrame()
@@ -64,18 +86,14 @@ function menu:CreateHostFrame()
 	hostFrame:SetState("mainmenu")
 	
 	local textInput = Loveframes.Create("textinput", hostFrame)
-	textInput:SetPos(190, 30)
-	textInput:SetWidth(100)
-	textInput.onEnter = function(object)
-		--object is the string thing inside the textInput box.
-		--TODO: host a server when this function is called.
-	end
-	textInput:SetFont(love.graphics.newFont(12))
+	textInput:SetPos(220, 34)
+	textInput:SetWidth(70)
 	
 	local textPort = Loveframes.Create("text", hostFrame)
 	textPort:SetText("Port: ")
-	textPort:SetPos(10, 36)
+	textPort:SetPos(10, 40)
 	
+	--this button on click will host a server.
 	local buttonCreateServer = Loveframes.Create("button", hostFrame)
 	buttonCreateServer:SetPos(10, 70)
 	buttonCreateServer:SetSize(280, 60)
