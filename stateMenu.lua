@@ -65,24 +65,24 @@ function menu:CreateConnectFrame()
 	textIP:SetText("IP: ")
 	textIP:SetPos(10, 36)
 	
-	clientconfig.ip = -1
+	clientconfig.ip = ""
 	local textInputIP = Loveframes.Create("textinput", connectFrame)
 	textInputIP:SetPos(100, 30)
 	textInputIP:SetWidth(190)
 	textInputIP.OnFocusLost = function(object)
-		clientconfig.ip = tonumber(object:GetText())
+		clientconfig.ip = object:GetText()
 	end
 	
 	local textPort = Loveframes.Create("text", connectFrame)
 	textPort:SetText("Port: ")
 	textPort:SetPos(10, 80)
 	
-	clientconfig.port = -1
+	clientconfig.port = ""
 	local textInputPort = Loveframes.Create("textinput", connectFrame)
 	textInputPort:SetPos(220, 74)
 	textInputPort:SetWidth(70)
-	textInputPort.OnFocusLOst = function(object)
-		clientconfig.port = tonumber(object:GetText())
+	textInputPort.OnFocusLost = function(object)
+		clientconfig.port = object:GetText()
 	end
 	
 	--this button on click will host a server.

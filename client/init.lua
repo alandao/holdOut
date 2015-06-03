@@ -1,46 +1,31 @@
-require "libraries.hump.class" -- required for LUBE
-require "libraries.LUBE"
-require "libraries.Binary"
+require "enet"
 
 client = {}
 
 function client:enter(...)
 	print("Entered client state")
---[[
 	Loveframes.SetState("ingame")
-	--magic number. 2 is the second argument in Gamestate.Switch(...)
-	--indexes do not start at 0 in this language
+	
+	--2 is the second argument in Gamestate.switch(...)
 	local clientconfig = ({...})[2]
 	
-	clientSocket = lube.udpClient()
-	clientSocket:createSocket()
-	clientSocket.host = clientconfig.ip
-	clientSocket.port = clientconfig.port
-	clientSocket.connected = true
+	host = enet.host_create()
+	server = host:connect(clientconfig.ip .. ":" .. clientconfig.port)
 	
-	client_blob = {}
---]]
-
 end
---[[
+
 function client:update(dt)
-	client_blob.x, client_blob.y = love.mouse.getPosition()
-	
-	data = client:receive() -- we're getting incoming server data.
-	
-	if data then
-		server_blob = bin:unpack(data) -- unpack received data from string to array
+	local event = host:service(0)
+	while event do
+		if event.type == "receive" then
+			print("Got message: ", event.data, event.peer)
+			event.peer:send( "ping" )
+		elseif event.type == "connect" then
+			print(event.peer " connected.")
+			event.peer:send( "ping" )
+		elseif event.type == "disconnect" then
+			print(event.peer .. " disconnected.")
+		end
+		event = host:service()
 	end
-	
-	client:send(bin:pack(client_blob)) -- pack client_blob into string and send to server
-
 end
-
-function client:draw()
-	love.graphics.circle('line', client_blob.x, client_blob.y, 5, 10)
-	if server_blob then
-		love.graphics.circle('line', server_blob.x, server_blob.y, 5, 10)
-	end
-	
-end
---]]
