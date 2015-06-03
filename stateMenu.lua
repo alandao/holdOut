@@ -1,5 +1,12 @@
-menu = {}
+require "client"
+require "listenserver"
 
+menu = {}
+--[[
+	BIG TODO: ADD ERROR CHECKING FOR ALL TEXTFIELDS.
+	REASON: listenServer and client will assume they
+	have proper input.
+--]]
 function menu:enter()
 	menu:CreateToolbar()
 	Loveframes.SetState("mainmenu")
@@ -44,6 +51,8 @@ function menu:CreateToolbar()
 end
 
 function menu:CreateConnectFrame()
+	local clientconfig = {}
+	
 	local connectFrame = Loveframes.Create("frame")
 	connectFrame:SetName("Connect to server")
 	connectFrame:SetSize(300, 200)
@@ -56,27 +65,40 @@ function menu:CreateConnectFrame()
 	textIP:SetText("IP: ")
 	textIP:SetPos(10, 36)
 	
+	clientconfig.ip = -1
 	local textInputIP = Loveframes.Create("textinput", connectFrame)
 	textInputIP:SetPos(100, 30)
 	textInputIP:SetWidth(190)
+	textInputIP.OnFocusLost = function(object)
+		clientconfig.ip = tonumber(object:GetText())
+	end
 	
 	local textPort = Loveframes.Create("text", connectFrame)
 	textPort:SetText("Port: ")
 	textPort:SetPos(10, 80)
 	
+	clientconfig.port = -1
 	local textInputPort = Loveframes.Create("textinput", connectFrame)
 	textInputPort:SetPos(220, 74)
 	textInputPort:SetWidth(70)
+	textInputPort.OnFocusLOst = function(object)
+		clientconfig.port = tonumber(object:GetText())
+	end
 	
 	--this button on click will host a server.
 	local buttonConnect = Loveframes.Create("button", connectFrame)
 	buttonConnect:SetPos(10, 110)
 	buttonConnect:SetSize(280, 80)
 	buttonConnect:SetText("Connect")
+	buttonConnect.OnClick = function(object)
+		Gamestate.switch(client, clientconfig)
+	end
 	
 end
 
 function menu:CreateHostFrame()
+	local serverconfig = {}
+	
 	local hostFrame = Loveframes.Create("frame")
 	hostFrame:SetName("Host a server")
 	hostFrame:SetSize(300, 140)
@@ -85,9 +107,13 @@ function menu:CreateHostFrame()
 	hostFrame:Center()
 	hostFrame:SetState("mainmenu")
 	
+	serverconfig.port = -1
 	local textInput = Loveframes.Create("textinput", hostFrame)
 	textInput:SetPos(220, 34)
 	textInput:SetWidth(70)
+	textInput.OnFocusLost = function(object)
+		serverconfig.port = tonumber(object:GetText())
+	end
 	
 	local textPort = Loveframes.Create("text", hostFrame)
 	textPort:SetText("Port: ")
@@ -98,5 +124,8 @@ function menu:CreateHostFrame()
 	buttonCreateServer:SetPos(10, 70)
 	buttonCreateServer:SetSize(280, 60)
 	buttonCreateServer:SetText("Create Server")
+	buttonCreateServer.OnClick = function(object)
+		Gamestate.switch(listenserver, serverconfig)
+	end
 	
 end
