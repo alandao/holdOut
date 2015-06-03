@@ -65,10 +65,11 @@ function menu:CreateConnectFrame()
 	textIP:SetText("IP: ")
 	textIP:SetPos(10, 36)
 	
-	clientconfig.ip = ""
+	clientconfig.ip = "localhost"
 	local textInputIP = Loveframes.Create("textinput", connectFrame)
 	textInputIP:SetPos(100, 30)
 	textInputIP:SetWidth(190)
+	textInputIP:SetText("localhost")
 	textInputIP.OnFocusLost = function(object)
 		clientconfig.ip = object:GetText()
 	end
@@ -77,10 +78,11 @@ function menu:CreateConnectFrame()
 	textPort:SetText("Port: ")
 	textPort:SetPos(10, 80)
 	
-	clientconfig.port = ""
+	clientconfig.port = "27015"
 	local textInputPort = Loveframes.Create("textinput", connectFrame)
 	textInputPort:SetPos(220, 74)
 	textInputPort:SetWidth(70)
+	textInputPort:SetText("27015")
 	textInputPort.OnFocusLost = function(object)
 		clientconfig.port = object:GetText()
 	end
@@ -107,12 +109,13 @@ function menu:CreateHostFrame()
 	hostFrame:Center()
 	hostFrame:SetState("mainmenu")
 	
-	serverconfig.port = -1
+	serverconfig.port = "27015"
 	local textInput = Loveframes.Create("textinput", hostFrame)
 	textInput:SetPos(220, 34)
 	textInput:SetWidth(70)
+	textInput:SetText("27015")
 	textInput.OnFocusLost = function(object)
-		serverconfig.port = tonumber(object:GetText())
+		serverconfig.port = object:GetText()
 	end
 	
 	local textPort = Loveframes.Create("text", hostFrame)
