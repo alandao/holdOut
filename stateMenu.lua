@@ -9,7 +9,6 @@ function menu:CreateToolbar()
 
 	local width = love.graphics.getWidth()
 	local version = 0.1
-	
 	local toolbar = Loveframes.Create("panel")
 	toolbar:SetSize(width, 35)
 	toolbar:SetPos(0, 0)
@@ -41,6 +40,16 @@ function menu:CreateToolbar()
 	menu.buttonHost.OnClick = function()
 		menu:CreateHostFrame()
 	end
+
+	menu.buttonOptions = Loveframes.Create("button", toolbar)
+	menu.buttonOptions:SetPos(toolbar:GetWidth()-315, 5)
+	menu.buttonOptions:SetSize(100,25)
+	menu.buttonOptions:SetState("mainmenu")
+	menu.buttonOptions:SetText("Options")
+	menu.buttonOptions.OnClick = function() menu:CreateOptionsFrame()
+	
+	end
+	
 end
 
 function menu:CreateConnectFrame()
@@ -99,4 +108,32 @@ function menu:CreateHostFrame()
 	buttonCreateServer:SetSize(280, 60)
 	buttonCreateServer:SetText("Create Server")
 	
+end
+
+function menu:CreateOptionsFrame()
+local optionsFrame = Loveframes.Create("frame")
+optionsFrame:SetName("Options")
+optionsFrame:SetSize(300,200)
+optionsFrame:SetDraggable(false)
+optionsFrame:SetModal(true)
+optionsFrame:Center()
+optionsFrame:SetState("mainmenu")
+
+local buttonControls = Loveframes.Create("button", optionsFrame)
+buttonControls:SetPos(40,100)
+buttonControls:SetSize(80,50)
+buttonControls:SetText("Controls")
+buttonControls.OnClick = function() print("testing control clicks")
+
+end
+
+local buttonHelp = Loveframes.Create("button", optionsFrame)
+buttonHelp:SetPos(180,100)
+buttonHelp:SetSize(80,50)
+buttonHelp:SetText("Help")
+
+buttonHelp.OnClick = function() print("testing help clicks")
+
+end
+
 end
