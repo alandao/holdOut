@@ -34,3 +34,7 @@ end
 function love.textinput(text)
 	Loveframes.textinput(text)
 end
+
+function love.threaderror(thread, errorstr)
+  print("Server error!\n" .. errorstr)
+end
