@@ -86,8 +86,7 @@ function menu:CreateConnectFrame()
 	textInputPort.OnFocusLost = function(object)
 		clientconfig.port = object:GetText()
 	end
-	
-	--this button on click will host a server.
+  
 	local buttonConnect = Loveframes.Create("button", connectFrame)
 	buttonConnect:SetPos(10, 110)
 	buttonConnect:SetSize(280, 80)
