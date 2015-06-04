@@ -6,29 +6,25 @@ function client:enter(...)
 	print("Entered client state")
 	Loveframes.SetState("ingame")
 
+  channel = love.thread.getChannel("debug") --will contain a queue of debug messages
+
 	--2 is the second argument in Gamestate.switch(...)
 	local clientconfig = ({...})[2]
-
 	host = enet.host_create()
 	server = host:connect(clientconfig.ip .. ":" .. clientconfig.port)
-	done = false
 
 end
 
 function client:update(dt)
-	local event = host:service(100)
+	local event = host:service(0.03)
+  print(channel:pop())
 	if event then
 		if event.type == "connect" then
-			print("Connected to", event.peer)
+      print("Connected to", event.peer)
 			event.peer:send("hello world")
     elseif event.type == "receive" then
       print("Got message: ", event.data, event.peer)
-      done = true
+      event.peer:send("hello world always")
     end
 	end
-  if done then
-    server:disconnect()
-    host:flush()
-    Gamestate.switch(menu)
-  end
 end
