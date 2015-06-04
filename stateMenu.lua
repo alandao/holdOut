@@ -1,5 +1,12 @@
-menu = {}
+require "client"
+require "listenserver"
 
+menu = {}
+--[[
+	BIG TODO: ADD ERROR CHECKING FOR ALL TEXTFIELDS.
+	REASON: listenServer and client will assume they
+	have proper input.
+--]]
 function menu:enter()
 	menu:CreateToolbar()
 	Loveframes.SetState("mainmenu")
@@ -9,20 +16,21 @@ function menu:CreateToolbar()
 
 	local width = love.graphics.getWidth()
 	local version = 0.1
+	
 	local toolbar = Loveframes.Create("panel")
 	toolbar:SetSize(width, 35)
 	toolbar:SetPos(0, 0)
 	toolbar:SetState("mainmenu")
-
+	
 	local info = Loveframes.Create("text", toolbar)
 	info:SetPos(5, 3)
 	info:SetState("mainmenu")
 	info:SetText({
-		{color = {0, 0, 0, 255}},
+		{color = {0, 0, 0, 255}}, 
 		"HoldOut",
-		{color = {129, 87, 255, 255}}, " version " ..version,
+		{color = {129, 87, 255, 255}}, " version " ..version, 
 	})
-
+	
 	menu.buttonConnect = Loveframes.Create("button", toolbar)
 	menu.buttonConnect:SetPos(toolbar:GetWidth() - 105, 5)
 	menu.buttonConnect:SetSize(100, 25)
@@ -31,7 +39,7 @@ function menu:CreateToolbar()
 	menu.buttonConnect.OnClick = function()
 		menu:CreateConnectFrame()
 	end
-
+	
 	menu.buttonHost = Loveframes.Create("button", toolbar)
 	menu.buttonHost:SetPos(toolbar:GetWidth() - 210, 5)
 	menu.buttonHost:SetSize(100, 25)
@@ -53,6 +61,8 @@ function menu:CreateToolbar()
 end
 
 function menu:CreateConnectFrame()
+	local clientconfig = {}
+	
 	local connectFrame = Loveframes.Create("frame")
 	connectFrame:SetName("Connect to server")
 	connectFrame:SetSize(300, 200)
@@ -60,32 +70,46 @@ function menu:CreateConnectFrame()
 	connectFrame:SetModal(true)
 	connectFrame:Center()
 	connectFrame:SetState("mainmenu")
-
+	
 	local textIP = Loveframes.Create("text", connectFrame)
 	textIP:SetText("IP: ")
 	textIP:SetPos(10, 36)
-
+	
+	clientconfig.ip = "localhost"
 	local textInputIP = Loveframes.Create("textinput", connectFrame)
 	textInputIP:SetPos(100, 30)
 	textInputIP:SetWidth(190)
-
+	textInputIP:SetText("localhost")
+	textInputIP.OnFocusLost = function(object)
+		clientconfig.ip = object:GetText()
+	end
+	
 	local textPort = Loveframes.Create("text", connectFrame)
 	textPort:SetText("Port: ")
 	textPort:SetPos(10, 80)
-
+	
+	clientconfig.port = "27015"
 	local textInputPort = Loveframes.Create("textinput", connectFrame)
 	textInputPort:SetPos(220, 74)
 	textInputPort:SetWidth(70)
-
-	--this button on click will host a server.
+	textInputPort:SetText("27015")
+	textInputPort.OnFocusLost = function(object)
+		clientconfig.port = object:GetText()
+	end
+  
 	local buttonConnect = Loveframes.Create("button", connectFrame)
 	buttonConnect:SetPos(10, 110)
 	buttonConnect:SetSize(280, 80)
 	buttonConnect:SetText("Connect")
-
+	buttonConnect.OnClick = function(object)
+		Gamestate.switch(client, clientconfig)
+	end
+	
 end
 
 function menu:CreateHostFrame()
+	local serverconfig = {}
+	
 	local hostFrame = Loveframes.Create("frame")
 	hostFrame:SetName("Host a server")
 	hostFrame:SetSize(300, 140)
@@ -93,21 +117,29 @@ function menu:CreateHostFrame()
 	hostFrame:SetModal(true)
 	hostFrame:Center()
 	hostFrame:SetState("mainmenu")
-
+	
+	serverconfig.port = "27015"
 	local textInput = Loveframes.Create("textinput", hostFrame)
 	textInput:SetPos(220, 34)
 	textInput:SetWidth(70)
-
+	textInput:SetText("27015")
+	textInput.OnFocusLost = function(object)
+		serverconfig.port = object:GetText()
+	end
+	
 	local textPort = Loveframes.Create("text", hostFrame)
 	textPort:SetText("Port: ")
 	textPort:SetPos(10, 40)
-
+	
 	--this button on click will host a server.
 	local buttonCreateServer = Loveframes.Create("button", hostFrame)
 	buttonCreateServer:SetPos(10, 70)
 	buttonCreateServer:SetSize(280, 60)
 	buttonCreateServer:SetText("Create Server")
-
+	buttonCreateServer.OnClick = function(object)
+		Gamestate.switch(listenserver, serverconfig)
+	end
+	
 end
 
 function menu:CreateOptionsFrame()

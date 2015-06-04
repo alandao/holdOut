@@ -1,7 +1,7 @@
 Gamestate = require "libraries.hump.gamestate"
-Loveframes = require("libraries.loveframes")
-require("stateMenu")
-
+Loveframes = require "libraries.loveframes"
+require "statemenu"
+require "lovedebug"
 
 function love.load()
     Gamestate.registerEvents()
@@ -34,4 +34,8 @@ end
 
 function love.textinput(text)
 	Loveframes.textinput(text)
+end
+
+function love.threaderror(thread, errorstr)
+  print("Server error!\n" .. errorstr)
 end
