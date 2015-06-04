@@ -3,7 +3,7 @@ require "enet"
 client = {}
 
 function client:enter(...)
-	print("Entered client state")
+	clientPrint("Entered client state")
 	Loveframes.SetState("ingame")
 
   channel = love.thread.getChannel("debug") --will contain a queue of debug messages
@@ -12,19 +12,26 @@ function client:enter(...)
 	local clientconfig = ({...})[2]
 	host = enet.host_create()
 	server = host:connect(clientconfig.ip .. ":" .. clientconfig.port)
-
 end
 
 function client:update(dt)
+  --get messages from server
+  if channel:peek() ~= nil then
+    print(channel:pop())
+  end
+
 	local event = host:service(0.03)
-  print(channel:pop())
 	if event then
 		if event.type == "connect" then
-      print("Connected to", event.peer)
+      clientPrint("Connected to " .. host:get_socket_address())
 			event.peer:send("hello world")
     elseif event.type == "receive" then
-      print("Got message: ", event.data, event.peer)
+      print("Client: Got message: ", event.data, event.peer)
       event.peer:send("hello world always")
     end
 	end
+end
+
+function clientPrint(message)
+  print("Client: " .. message)
 end
