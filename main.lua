@@ -1,6 +1,7 @@
 Gamestate = require "libraries.hump.gamestate"
 Loveframes = require "libraries.loveframes"
 require "statemenu"
+require "lovedebug"
 
 function love.load()
     Gamestate.registerEvents()
