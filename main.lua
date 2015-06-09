@@ -2,7 +2,7 @@ Gamestate = require "libraries.hump.gamestate"
 Loveframes = require "libraries.loveframes"
 require "statemenu"
 require "lovedebug"
-
+--sdada
 function love.load()
     Gamestate.registerEvents()
     Gamestate.switch(menu)
