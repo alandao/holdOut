@@ -2,17 +2,26 @@ Gamestate = require "libraries.hump.gamestate"
 Loveframes = require "libraries.loveframes"
 require "statemenu"
 require "lovedebug"
+local sti = require "libraries.sti"
 
 function love.load()
+	loadMap = false
+	map = sti.new("map/desert")
     Gamestate.registerEvents()
     Gamestate.switch(menu)
 end
 
 function love.update(dt)
+	if loadMap then 
+	map:update(dt)
+	end
     Loveframes.update(dt)
 end
 
 function love.draw()
+	if loadMap then
+	map:draw()
+	end
     Loveframes.draw()
 end
 

@@ -47,6 +47,7 @@ function menu:CreateToolbar()
 	menu.buttonHost:SetText("Host")
 	menu.buttonHost.OnClick = function()
 		menu:CreateHostFrame()
+
 	end
 
 	menu.buttonOptions = Loveframes.Create("button", toolbar)
@@ -102,6 +103,7 @@ function menu:CreateConnectFrame()
 	buttonConnect:SetSize(280, 80)
 	buttonConnect:SetText("Connect")
 	buttonConnect.OnClick = function(object)
+		connectFrame:SetModal(false)
 		Gamestate.switch(client, clientconfig)
 	end
 	
@@ -137,6 +139,7 @@ function menu:CreateHostFrame()
 	buttonCreateServer:SetSize(280, 60)
 	buttonCreateServer:SetText("Create Server")
 	buttonCreateServer.OnClick = function(object)
+		hostFrame:SetModal(false)
 		Gamestate.switch(listenserver, serverconfig)
 	end
 	
@@ -155,8 +158,7 @@ function menu:CreateOptionsFrame()
 	buttonControls:SetPos(20,70)
 	buttonControls:SetSize(80,50)
 	buttonControls:SetText("Controls")
-	buttonControls.OnClick = function() print("testing control clicks")
-
+	buttonControls.OnClick = function() print("testing some control clicks")
 	end
 
 	local buttonHelp = Loveframes.Create("button", optionsFrame)
