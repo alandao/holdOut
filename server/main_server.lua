@@ -14,7 +14,7 @@ function debugPush(x)
 end
 
 debugPush("Starting server on port " .. port)
-
+loadMap = true
 
 local host = enet.host_create("localhost:" .. port)
 

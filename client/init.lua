@@ -1,4 +1,5 @@
 require "enet"
+local sti = require "libraries.sti"
 
 client = {}
 
@@ -6,7 +7,8 @@ function client:enter(...)
 	clientPrint("Entered client state")
 	Loveframes.SetState("ingame")
 
-  channel = love.thread.getChannel("debug") --will contain a queue of debug messages
+	map = sti.new("map/desert")
+	channel = love.thread.getChannel("debug") --will contain a queue of debug messages
 
 	--2 is the second argument in Gamestate.switch(...)
 	local clientconfig = ({...})[2]
@@ -23,15 +25,20 @@ function client:update(dt)
 	local event = host:service(0.03)
 	if event then
 		if event.type == "connect" then
-      clientPrint("Connected to " .. host:get_socket_address())
+			clientPrint("Connected to " .. host:get_socket_address())
 			event.peer:send("hello world")
-    elseif event.type == "receive" then
-      print("Client: Got message: ", event.data, event.peer)
-      event.peer:send("hello world always")
-    end
+		elseif event.type == "receive" then
+			print("Client: Got message: ", event.data, event.peer)
+			event.peer:send("hello world always")
+		end
 	end
+end
+
+function client:draw()
+	map:draw()
 end
 
 function clientPrint(message)
   print("Client: " .. message)
 end
+
